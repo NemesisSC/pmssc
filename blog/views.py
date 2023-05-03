@@ -101,8 +101,6 @@ def getBlogs(request):
             'message': str(e)
         })
     
-    
-    
 @api_view(['GET'])
 
 def getBlogsByID(request, blog_id):
@@ -119,3 +117,57 @@ def getBlogsByID(request, blog_id):
             'code': status.HTTP_400_BAD_REQUEST,
             'message': str(e)
         })
+    @api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def blogEdit(request, blog_id):
+    try:
+        blog_data = request.data
+
+        if 'image' in blog_data:
+            fmt, img_str = str(blog_data['image']).split(';base64,')
+            ext = fmt.split('/')[-1]
+            img_file = ContentFile(base64.b64decode(img_str), name='temp.' + ext)
+            blog_data['image'] = img_file
+
+
+        if 'title' in blog_data:
+
+            blog_slug = slugify(unidecode(blog_data['title']))
+
+            suffix_counter = 1
+            while True:
+                temp_instance = Blogs.objects.filter(slug__exact=blog_slug)
+
+                if temp_instance.exists():
+                    blog_slug = slugify(unidecode(blog_data['title']))
+                    blog_slug = "%s-%s" % (blog_slug, suffix_counter)
+                    suffix_counter += 1
+                else:
+                    break
+            blog_data['slug'] = blog_slug
+
+        blog_instance = Blogs.objects.get(id=blog_id)
+        blog_serializer = BlogSerializer(blog_instance, data=blog_data, partial=True)
+        if blog_serializer.is_valid():
+            blog_serializer.save()
+            return Response({
+                'code': status.HTTP_200_OK,
+                'response': "Blog Update Successfully",
+                "data": blog_serializer.data
+
+            })
+        else:
+            print("hello")
+            return Response({
+                'code': status.HTTP_400_BAD_REQUEST,
+                'response': "Blog Update Failed",
+                "data": blog_serializer.errors
+
+            })
+    except Exception as e:
+        print(e)
+        return Response({
+            'code': status.HTTP_400_BAD_REQUEST,
+            'response': "Errors in data",
+            'error': str(e)
+        })
