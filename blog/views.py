@@ -191,20 +191,20 @@ def blogDelete(request, blog_id):
         })
 
 
-# @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
-# def blogStatusToggle(request, blog_id):
-#     try:
-#         blog_instance = Blogs.objects.get(id=blog_id)
-#         blog_instance.status = not blog_instance.status
-#         blog_instance.save()
-#         return Response({
-#             'code': status.HTTP_200_OK,
-#             'response': "Blog status updated successfully!",
-#         })
-#     except Exception as e:
-#         return Response({
-#             'code': status.HTTP_200_OK,
-#             'response': "Blog status updated failed!",
-#             "error": str(e)
-#         })
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def blogStatusToggle(request, blog_id):
+    try:
+        blog_instance = Blogs.objects.get(id=blog_id)
+        blog_instance.status = not blog_instance.status
+        blog_instance.save()
+        return Response({
+            'code': status.HTTP_200_OK,
+            'response': "Blog status updated successfully!",
+        })
+    except Exception as e:
+        return Response({
+            'code': status.HTTP_200_OK,
+            'response': "Blog status updated failed!",
+            "error": str(e)
+        })
