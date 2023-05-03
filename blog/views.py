@@ -100,13 +100,13 @@ def getBlogs(request):
             'code': status.HTTP_400_BAD_REQUEST,
             'message': str(e)
         })
-    
-@api_view(['GET'])
 
-def getBlogsByID(request, blog_id):
+@api_view(['GET'])
+def getBlogs(request):
     try:
-        blog_list = Blogs.objects.get(id=blog_id)
-        blog_serializer = BlogSerializer(blog_list)
+
+        blog_list = Blogs.objects.all()
+        blog_serializer = BlogSerializer(blog_list, many=True)
         return Response({
             'code': status.HTTP_200_OK,
             'message': 'Blogs received successfully!',
@@ -116,8 +116,10 @@ def getBlogsByID(request, blog_id):
         return Response({
             'code': status.HTTP_400_BAD_REQUEST,
             'message': str(e)
-        })
-    @api_view(['PATCH'])
+        })
+
+        
+@api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
 def blogEdit(request, blog_id):
     try:
@@ -171,3 +173,38 @@ def blogEdit(request, blog_id):
             'response': "Errors in data",
             'error': str(e)
         })
+
+# @api_view(['DELETE'])
+# @permission_classes([IsAuthenticated])
+# def blogDelete(request, blog_id):
+#     try:
+#         Blogs.objects.filter(id=blog_id).delete()
+#         return Response({
+#             'code': status.HTTP_200_OK,
+#             'response': "Blog deleted successfully!",
+#         })
+#     except Exception as e:
+#         return Response({
+#             'code': status.HTTP_400_BAD_REQUEST,
+#             'response': "Blog delete failed!",
+#             "error": str(e)
+#         })
+
+
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+# def blogStatusToggle(request, blog_id):
+#     try:
+#         blog_instance = Blogs.objects.get(id=blog_id)
+#         blog_instance.status = not blog_instance.status
+#         blog_instance.save()
+#         return Response({
+#             'code': status.HTTP_200_OK,
+#             'response': "Blog status updated successfully!",
+#         })
+#     except Exception as e:
+#         return Response({
+#             'code': status.HTTP_200_OK,
+#             'response': "Blog status updated failed!",
+#             "error": str(e)
+#         })
