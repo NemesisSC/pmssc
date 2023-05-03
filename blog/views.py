@@ -174,21 +174,21 @@ def blogEdit(request, blog_id):
             'error': str(e)
         })
 
-# @api_view(['DELETE'])
-# @permission_classes([IsAuthenticated])
-# def blogDelete(request, blog_id):
-#     try:
-#         Blogs.objects.filter(id=blog_id).delete()
-#         return Response({
-#             'code': status.HTTP_200_OK,
-#             'response': "Blog deleted successfully!",
-#         })
-#     except Exception as e:
-#         return Response({
-#             'code': status.HTTP_400_BAD_REQUEST,
-#             'response': "Blog delete failed!",
-#             "error": str(e)
-#         })
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def blogDelete(request, blog_id):
+    try:
+        Blogs.objects.filter(id=blog_id).delete()
+        return Response({
+            'code': status.HTTP_200_OK,
+            'response': "Blog deleted successfully!",
+        })
+    except Exception as e:
+        return Response({
+            'code': status.HTTP_400_BAD_REQUEST,
+            'response': "Blog delete failed!",
+            "error": str(e)
+        })
 
 
 # @api_view(['GET'])
