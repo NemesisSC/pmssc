@@ -41,11 +41,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'home',
-    'product',
-    'blog',
-    'api',
-    'authentication',
+    # 'home',
+    # 'product',
+    # 'blog',
+    # 'api',
+    # 'authentication',
     'system_manager'
 
 ]
@@ -94,7 +94,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
     "http://127.0.0.1:9000",
 ]
-ROOT_URLCONF = 'pms.urls'
+ROOT_URLCONF = 'pmssc.urls'
 
 TEMPLATES = [
     {
@@ -112,7 +112,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'pms.wsgi.application'
+WSGI_APPLICATION = 'pmssc.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
