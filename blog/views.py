@@ -100,3 +100,22 @@ def getBlogs(request):
             'code': status.HTTP_400_BAD_REQUEST,
             'message': str(e)
         })
+    
+    
+    
+@api_view(['GET'])
+
+def getBlogsByID(request, blog_id):
+    try:
+        blog_list = Blogs.objects.get(id=blog_id)
+        blog_serializer = BlogSerializer(blog_list)
+        return Response({
+            'code': status.HTTP_200_OK,
+            'message': 'Blogs received successfully!',
+            'data': blog_serializer.data
+        })
+    except Exception as e:
+        return Response({
+            'code': status.HTTP_400_BAD_REQUEST,
+            'message': str(e)
+        })
