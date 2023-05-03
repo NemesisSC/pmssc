@@ -13,7 +13,8 @@ urlpatterns = [
     path('/token/', tokenObtainPair),
     path('/token/refresh/', tokenRefresh),
     path('/token/verify/', tokenVerify),
-    path('/test', test_view)
+    path('/test', test_view),
+    path('/user/list', getUserList),
     # path('google/login',GoogleView),
 
 ]

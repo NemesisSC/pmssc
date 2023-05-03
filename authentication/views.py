@@ -15,7 +15,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.hashers import make_password
 from rest_framework.utils import json
-
+from django.db.models import Q
 
 @api_view(['POST'])
 @permission_classes([])
@@ -187,3 +187,24 @@ def registration_view(request):
                 'message': "Error Occured",
                 'error':serializer.errors
             })
+
+@api_view(['GET'])
+# @authentication_classes([])
+# @permission_classes([])
+def getUserList(request):
+    try:
+        user_list= User.objects.filter(~Q(is_staff=True))
+        user_serializer= UserInfoSerializer(user_list, many=True)
+        return Response({
+            'code': status.HTTP_200_OK,
+            'response': "Received Data Successfully",
+            "data": user_serializer.data
+        })
+
+    except Exception as e:
+        return Response({
+            'code': status.HTTP_400_BAD_REQUEST,
+            'response': "Data not Found",
+            'error': str(e)
+        })
+        
