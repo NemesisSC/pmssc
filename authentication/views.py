@@ -194,6 +194,7 @@ def registration_view(request):
 def getUserList(request):
     try:
         user_list= User.objects.filter(~Q(is_staff=True))
+        print(user_list)
         user_serializer= UserInfoSerializer(user_list, many=True)
         return Response({
             'code': status.HTTP_200_OK,
