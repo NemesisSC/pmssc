@@ -91,7 +91,6 @@ def tokenObtainPair(request):
             ]
         })
 
-
 @api_view(['POST'])
 def tokenRefresh(request):
     try:
