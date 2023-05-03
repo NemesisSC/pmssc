@@ -31,5 +31,56 @@ def upload_to(instance, filename):
     base, extension = os.path.splitext(filename.lower())
     milliseconds = right_now.microsecond // 1000
     return f"{right_now:%Y%m%d%H%M%S}{milliseconds}{extension}"
+    
+    
+    
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def blogCreate(request):
+    try:
+        blog_data = request.data
+
+        if 'image' in blog_data:
+            fmt, img_str = str(blog_data['image']).split(';base64,')
+            ext = fmt.split('/')[-1]
+            img_file = ContentFile(base64.b64decode(img_str), name='temp.' + ext)
+            blog_data['image'] = img_file
+        blog_serializer = BlogSerializer(data=blog_data)
+
+        if blog_serializer.is_valid():
+            blog_instance = blog_serializer.save()
+            blog_slug = slugify(unidecode(blog_serializer.data['title']))
+            suffix_counter = 1
+            while True:
+                temp_instance = Blogs.objects.filter(slug__exact=blog_slug)
+                if temp_instance.exists():
+                    blog_slug = slugify(unidecode(blog_serializer.data['title']))
+                    blog_slug = "%s-%s" % (blog_slug, suffix_counter)
+                    suffix_counter += 1
+                else:
+                    break
+            blog_instance.slug = blog_slug
+            blog_instance.save()
+
+            return Response({
+                'code': status.HTTP_200_OK,
+                'response': "Blog Successfully",
+                "data": blog_serializer.data
+
+            })
+        else:
+            return Response({
+                'code': status.HTTP_400_BAD_REQUEST,
+                'response': "Blog Not Created",
+                "data": blog_serializer.errors
+
+            })
+    except Exception as e:
+        print(e)
+        return Response({
+            'code': status.HTTP_400_BAD_REQUEST,
+            'response': "Errors in data",
+            'error': str(e)
+        })
 
 
