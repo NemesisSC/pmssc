@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     # 'product',
     # 'blog',
     # 'api',
-    # 'authentication',
+    'authentication',
     'system_manager'
 
 ]
