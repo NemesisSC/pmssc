@@ -2,6 +2,7 @@ from django.db import models
 from category.models import *
 
 # Create your models here.
+import system_manager.helper
 
 
 class Product(models.Model):
