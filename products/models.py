@@ -1,31 +1,16 @@
 from django.db import models
+from category.models import *
 
-import uuid
 # Create your models here.
 
-def generate_filename(instance, filename):
-    extension = filename.split('.')[-1]
-    new_filename = "cwcspublications_%s.%s" % (uuid.uuid4(), extension)
-    return new_filename
-
-
-class Category(models.Model):
-    
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
 class Product(models.Model):
     pid = models.CharField(max_length=20, null=True, blank=True)
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=255, null=True, blank=True)
     unit = models.CharField(max_length=200, null=True, blank=True)
-    description = models.TextField(null=True)
-    
-    category = models.CharField(max_length=200)
-    cat_description = models.TextField(null=True)
-    sub_category  = models.CharField(max_length=200)
-    cat_featured = models.BooleanField(default=False)
-    
+    category = models.ForeignKey(Category, on_delete=models.DO_NOTHING, related_name='product_category', null=True)
+    subcategory = models.ForeignKey(Category, on_delete=models.DO_NOTHING, related_name='product_subcategory', null=True)
     featured = models.BooleanField(default=False)
     stock_status = models.BooleanField(default=False)
     hot_items = models.BooleanField(default=False)
@@ -51,4 +36,4 @@ class ProductUnit(models.Model):
 
 class ProductImages(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_img')
-    image = models.ImageField(upload_to=generate_filename)
+    image = models.ImageField(upload_to=system_manager.helper.generate_filename)

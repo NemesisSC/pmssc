@@ -33,10 +33,10 @@ def upload_to(instance, filename):
     return f"{right_now:%Y%m%d%H%M%S}{milliseconds}{extension}"
     
     
-#  This function is to create blogs   
+    
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def bc(request):
+def blogCreate(request):
     try:
         blog_data = request.data
 
@@ -83,11 +83,9 @@ def bc(request):
             'error': str(e)
         })
 
-
-# This function is to get blogs List 
 @api_view(['GET'])
 
-def gb(request):
+def getBlogs(request):
     try:
 
         blog_list = Blogs.objects.all()
@@ -103,10 +101,8 @@ def gb(request):
             'message': str(e)
         })
 
-
-# This function is to get blogs details
 @api_view(['GET'])
-def gb(request):
+def getBlogs(request):
     try:
 
         blog_list = Blogs.objects.all()
@@ -122,10 +118,10 @@ def gb(request):
             'message': str(e)
         })
 
-# This function is to edit blogs      
+        
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
-def be(request, blog_id):
+def blogEdit(request, blog_id):
     try:
         blog_data = request.data
 
@@ -178,11 +174,9 @@ def be(request, blog_id):
             'error': str(e)
         })
 
-
-# This function is to delete blogs List 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
-def bd(request, blog_id):
+def blogDelete(request, blog_id):
     try:
         Blogs.objects.filter(id=blog_id).delete()
         return Response({
@@ -196,10 +190,10 @@ def bd(request, blog_id):
             "error": str(e)
         })
 
-# This function is to toggle blog status
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def bst(request, blog_id):
+def blogStatusToggle(request, blog_id):
     try:
         blog_instance = Blogs.objects.get(id=blog_id)
         blog_instance.status = not blog_instance.status

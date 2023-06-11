@@ -4,6 +4,7 @@ from rest_framework_friendly_errors.mixins import FriendlyErrorMessagesMixin
 from .models import *
 
 
+
 class ProductInfoSerializer(FriendlyErrorMessagesMixin, serializers.ModelSerializer):
     class Meta:
         model = Product
