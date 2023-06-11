@@ -4,11 +4,11 @@ from .views import *
 
 urlpatterns = [
 
-    path('', getBlogs),
-    path('/details/<int:blog_id>', getBlogs),
-    path('/create', blogCreate),
-    path('/edit/<int:blog_id>', blogEdit),
-    path('/delete/<int:blog_id>', blogDelete),
-    path('/status/<int:blog_id>', blogStatusToggle),
+    path('', gb),
+    path('/details/<int:blog_id>', gb),
+    path('/create', bc),
+    path('/edit/<int:blog_id>', be),
+    path('/delete/<int:blog_id>', bd),
+    path('/status/<int:blog_id>', bst),
 
 ]
